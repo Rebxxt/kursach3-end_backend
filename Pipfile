@@ -1,0 +1,19 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django-rest-framework = "*"
+django = "*"
+djangorestframework-camel-case = "*"
+django-filter = "*"
+flake8 = "*"
+isort = "*"
+psycopg2 = "*"
+python-dotenv = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.8"
