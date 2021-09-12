@@ -3,7 +3,7 @@ from django.db.models import Model, ForeignKey, CASCADE, TextField, CharField, I
 
 
 class RoleModel(Model):
-    role = IntegerField()
+    role = TextField()
 
 
 class UserRoleModel(Model):

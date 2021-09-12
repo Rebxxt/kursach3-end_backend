@@ -1,13 +1,13 @@
 from django.contrib.auth.backends import UserModel
 from django.db.models import Model, ForeignKey, CASCADE, TextField, BooleanField, IntegerField, CheckConstraint, Q
 
-from api.models.user import UserTransportModel, PhoneModel
+from api.models.user import UserTransportModel, PhoneModel, AddressModel
 
 
 class OrderModel(Model):
     client = ForeignKey(UserModel, on_delete=CASCADE)
     actual_phone = ForeignKey(PhoneModel, on_delete=CASCADE)
-    actual_address = ForeignKey()
+    actual_address = ForeignKey(AddressModel, on_delete=CASCADE)
 
 
 class ItemModel(Model):

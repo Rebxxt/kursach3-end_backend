@@ -12,6 +12,7 @@ flake8 = "*"
 isort = "*"
 psycopg2 = "*"
 python-dotenv = "*"
+drf-yasg = "*"
 
 [dev-packages]
 
