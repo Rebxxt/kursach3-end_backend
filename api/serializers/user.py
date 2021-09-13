@@ -1,8 +1,14 @@
 from django.contrib.auth.models import User
-from rest_framework.serializers import ModelSerializer
+from rest_framework.fields import CharField
+from rest_framework.serializers import ModelSerializer, Serializer
 
 from api.models import RoleModel, BuildModel, AddressModel, PhoneModel, TransportTypeModel, UserTransportModel, \
     UserRoleModel
+
+
+class AuthSerializer(Serializer):
+    login = CharField()
+    password = CharField()
 
 
 class UserSerializer(ModelSerializer):

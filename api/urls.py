@@ -2,10 +2,11 @@ from rest_framework import routers
 
 from api.views.order import OrderViewSet, ItemViewSet, OrderHistoryViewSet
 from api.views.user import UserViewSet, RoleViewSet, UserRoleViewSet, BuildViewSet, AddressViewSet, PhoneViewSet, \
-    TransportTypeViewSet, UserTransportViewSet
+    TransportTypeViewSet, UserTransportViewSet, AuthViewSet
 
 temp = routers.SimpleRouter()
 temp.register(r'user', UserViewSet)
+temp.register(r'auth', AuthViewSet)
 temp.register(r'role', RoleViewSet)
 temp.register(r'user-role', UserRoleViewSet)
 temp.register(r'build', BuildViewSet)

@@ -1,12 +1,34 @@
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin, UpdateModelMixin, DestroyModelMixin, RetrieveModelMixin, \
     CreateModelMixin
+from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from api.models import RoleModel, UserRoleModel, BuildModel, AddressModel, PhoneModel, TransportTypeModel, \
     UserTransportModel
 from api.serializers.user import UserSerializer, RoleSerializer, UserRoleSerializer, BuildSerializer, AddressSerializer, \
-    PhoneSerializer, TransportTypeSerializer, UserTransportSerializer
+    PhoneSerializer, TransportTypeSerializer, UserTransportSerializer, AuthSerializer
+
+
+class AuthViewSet(GenericViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    @swagger_auto_schema(request_body=AuthSerializer)
+    @action(methods=['POST'], detail=False)
+    def login(self, request, *args, **kwargs):
+        user = authenticate(username=request.data['login'], password=request.data['password'])
+        return Response(self.serializer_class(user).data)
+
+    @swagger_auto_schema(request_body=AuthSerializer)
+    @action(methods=['POST'], detail=False)
+    def registration(self, request, *args, **kwargs):
+        user = User.objects.create_user(username=request.data['login'], password=request.data['password'])
+        user = authenticate(username=user.username, password=request.data['password'])
+        return Response(self.serializer_class(user).data)
 
 
 class UserViewSet(ListModelMixin, CreateModelMixin, UpdateModelMixin, DestroyModelMixin, RetrieveModelMixin, GenericViewSet):
