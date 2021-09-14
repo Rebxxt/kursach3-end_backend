@@ -11,12 +11,6 @@ class AuthSerializer(Serializer):
     password = CharField()
 
 
-class UserSerializer(ModelSerializer):
-    class Meta:
-        model = User
-        fields = '__all__'
-
-
 class RoleSerializer(ModelSerializer):
     class Meta:
         model = RoleModel
@@ -56,4 +50,15 @@ class TransportTypeSerializer(ModelSerializer):
 class UserTransportSerializer(ModelSerializer):
     class Meta:
         model = UserTransportModel
+        fields = '__all__'
+
+
+class UserSerializer(ModelSerializer):
+    addresses = AddressSerializer(many=True)
+    roles = RoleSerializer(many=True)
+    phones = PhoneSerializer(many=True)
+    transports = UserTransportSerializer(many=True)
+
+    class Meta:
+        model = User
         fields = '__all__'

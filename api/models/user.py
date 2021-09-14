@@ -7,7 +7,7 @@ class RoleModel(Model):
 
 
 class UserRoleModel(Model):
-    user = ForeignKey(UserModel, on_delete=CASCADE)
+    user = ForeignKey(UserModel, on_delete=CASCADE, related_name='roles')
     role = ForeignKey(RoleModel, on_delete=CASCADE)
 
 
@@ -16,14 +16,14 @@ class BuildModel(Model):
 
 
 class AddressModel(Model):
-    user = ForeignKey(UserModel, on_delete=CASCADE, null=True)
+    user = ForeignKey(UserModel, on_delete=CASCADE, null=True, related_name='addresses')
     address = TextField()
     type = ForeignKey(BuildModel, on_delete=CASCADE)
     is_actual = BooleanField(default=True)
 
 
 class PhoneModel(Model):
-    user = ForeignKey(UserModel, on_delete=CASCADE)
+    user = ForeignKey(UserModel, on_delete=CASCADE, related_name='phones')
     phone = CharField(max_length=20)
 
 
@@ -32,7 +32,7 @@ class TransportTypeModel(Model):
 
 
 class UserTransportModel(Model):
-    user = ForeignKey(UserModel, on_delete=CASCADE)
+    user = ForeignKey(UserModel, on_delete=CASCADE, related_name='transports')
     type = ForeignKey(TransportTypeModel, on_delete=CASCADE)
     registration_number = TextField()
     info = TextField()
