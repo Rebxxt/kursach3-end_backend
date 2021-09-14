@@ -5,14 +5,14 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin, UpdateModelMixin, DestroyModelMixin, RetrieveModelMixin, \
     CreateModelMixin
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, SAFE_METHODS
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from api.models import RoleModel, UserRoleModel, BuildModel, AddressModel, PhoneModel, TransportTypeModel, \
     UserTransportModel
 from api.serializers.user import UserSerializer, RoleSerializer, UserRoleSerializer, BuildSerializer, AddressSerializer, \
-    PhoneSerializer, TransportTypeSerializer, UserTransportSerializer, AuthSerializer
+    PhoneSerializer, TransportTypeSerializer, UserTransportSerializer, AuthSerializer, UserRoleUpdateSerializer
 
 
 class AuthViewSet(GenericViewSet):
@@ -49,6 +49,17 @@ class UserViewSet(ListModelMixin, CreateModelMixin, UpdateModelMixin, DestroyMod
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    def get_serializer_class(self):
+        if self.action == 'roles':
+            return UserRoleSerializer
+        return self.serializer_class
+
+    @swagger_auto_schema()
+    @action(methods=['GET'], detail=True)
+    def roles(self, request, *args, **kwargs):
+        roles = UserRoleModel.objects.filter(user_id=kwargs['pk'])
+        return Response(self.get_serializer(roles, many=True).data)
+
 
 class RoleViewSet(ListModelMixin, CreateModelMixin, UpdateModelMixin, DestroyModelMixin, RetrieveModelMixin, GenericViewSet):
     queryset = RoleModel.objects.all()
@@ -58,6 +69,11 @@ class RoleViewSet(ListModelMixin, CreateModelMixin, UpdateModelMixin, DestroyMod
 class UserRoleViewSet(ListModelMixin, CreateModelMixin, UpdateModelMixin, DestroyModelMixin, RetrieveModelMixin, GenericViewSet):
     queryset = UserRoleModel.objects.all()
     serializer_class = UserRoleSerializer
+
+    def get_serializer_class(self):
+        if self.request.method not in SAFE_METHODS:
+            return UserRoleUpdateSerializer
+        return self.serializer_class
 
 
 class BuildViewSet(ListModelMixin, CreateModelMixin, UpdateModelMixin, DestroyModelMixin, RetrieveModelMixin, GenericViewSet):

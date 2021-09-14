@@ -18,6 +18,14 @@ class RoleSerializer(ModelSerializer):
 
 
 class UserRoleSerializer(ModelSerializer):
+    role = RoleSerializer()
+
+    class Meta:
+        model = UserRoleModel
+        fields = '__all__'
+
+
+class UserRoleUpdateSerializer(ModelSerializer):
     class Meta:
         model = UserRoleModel
         fields = '__all__'
@@ -55,7 +63,7 @@ class UserTransportSerializer(ModelSerializer):
 
 class UserSerializer(ModelSerializer):
     addresses = AddressSerializer(many=True)
-    roles = RoleSerializer(many=True)
+    roles = UserRoleSerializer(many=True)
     phones = PhoneSerializer(many=True)
     transports = UserTransportSerializer(many=True)
 
