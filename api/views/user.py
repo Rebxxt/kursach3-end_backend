@@ -19,7 +19,7 @@ class AuthViewSet(GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    @swagger_auto_schema(request_body=openapi.Schema(type=openapi.TYPE_OBJECT))
+    @swagger_auto_schema()
     @action(methods=['GET'], detail=False)
     def current(self, request, *args, **kwargs):
         return Response(self.serializer_class(request.user).data)
@@ -31,7 +31,7 @@ class AuthViewSet(GenericViewSet):
         login(request, user)
         return Response(self.serializer_class(user).data)
 
-    @swagger_auto_schema(request_body=openapi.Schema(type=openapi.TYPE_OBJECT))
+    @swagger_auto_schema()
     @action(methods=['GET'], detail=False, permission_classes=[IsAuthenticated])
     def logout(self, request, *args, **kwargs):
         logout(request)
