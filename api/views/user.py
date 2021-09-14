@@ -1,6 +1,5 @@
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.models import User
-from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin, UpdateModelMixin, DestroyModelMixin, RetrieveModelMixin, \
@@ -11,8 +10,10 @@ from rest_framework.viewsets import GenericViewSet
 
 from api.models import RoleModel, UserRoleModel, BuildModel, AddressModel, PhoneModel, TransportTypeModel, \
     UserTransportModel
+from api.repository.transport import transport_multiset
 from api.serializers.user import UserSerializer, RoleSerializer, UserRoleSerializer, BuildSerializer, AddressSerializer, \
-    PhoneSerializer, TransportTypeSerializer, UserTransportSerializer, AuthSerializer, UserRoleUpdateSerializer
+    PhoneSerializer, TransportTypeSerializer, UserTransportSerializer, AuthSerializer, UserRoleUpdateSerializer, \
+    UserTransportMultisetSerializer
 
 
 class AuthViewSet(GenericViewSet):
@@ -99,3 +100,16 @@ class TransportTypeViewSet(ListModelMixin, CreateModelMixin, UpdateModelMixin, D
 class UserTransportViewSet(ListModelMixin, CreateModelMixin, UpdateModelMixin, DestroyModelMixin, RetrieveModelMixin, GenericViewSet):
     queryset = UserTransportModel.objects.all()
     serializer_class = UserTransportSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'multiset':
+            return UserTransportMultisetSerializer
+        return self.serializer_class
+
+    @swagger_auto_schema(request_body=UserTransportMultisetSerializer)
+    @action(methods=['PATCH'], detail=False)
+    def multiset(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid()
+        transport_multiset(serializer)
+        return Response()

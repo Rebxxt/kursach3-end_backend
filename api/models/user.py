@@ -34,6 +34,6 @@ class TransportTypeModel(Model):
 class UserTransportModel(Model):
     user = ForeignKey(UserModel, on_delete=CASCADE, related_name='transports')
     type = ForeignKey(TransportTypeModel, on_delete=CASCADE)
-    registration_number = TextField()
+    registration_number = TextField(unique=True)
     info = TextField()
 
