@@ -28,7 +28,7 @@ class PhoneModel(Model):
 
 
 class TransportTypeModel(Model):
-    type = TextField()
+    type = TextField(unique=True)
 
 
 class UserTransportModel(Model):
