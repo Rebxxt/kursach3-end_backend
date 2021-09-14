@@ -1,9 +1,9 @@
 from django.contrib.auth.backends import UserModel
-from django.db.models import Model, ForeignKey, CASCADE, TextField, CharField, IntegerField
+from django.db.models import Model, ForeignKey, CASCADE, TextField, CharField, IntegerField, BooleanField
 
 
 class RoleModel(Model):
-    role = TextField()
+    role = TextField(unique=True)
 
 
 class UserRoleModel(Model):
@@ -12,13 +12,14 @@ class UserRoleModel(Model):
 
 
 class BuildModel(Model):
-    type = TextField()
+    type = TextField(unique=True)
 
 
 class AddressModel(Model):
     user = ForeignKey(UserModel, on_delete=CASCADE, null=True)
     address = TextField()
     type = ForeignKey(BuildModel, on_delete=CASCADE)
+    is_actual = BooleanField(default=True)
 
 
 class PhoneModel(Model):
