@@ -1,9 +1,11 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.models import User
+from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin, UpdateModelMixin, DestroyModelMixin, RetrieveModelMixin, \
     CreateModelMixin
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
@@ -17,11 +19,23 @@ class AuthViewSet(GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+    @swagger_auto_schema(request_body=openapi.Schema(type=openapi.TYPE_OBJECT))
+    @action(methods=['GET'], detail=False)
+    def current(self, request, *args, **kwargs):
+        return Response(self.serializer_class(request.user).data)
+
     @swagger_auto_schema(request_body=AuthSerializer)
     @action(methods=['POST'], detail=False)
     def login(self, request, *args, **kwargs):
         user = authenticate(username=request.data['login'], password=request.data['password'])
+        login(request, user)
         return Response(self.serializer_class(user).data)
+
+    @swagger_auto_schema(request_body=openapi.Schema(type=openapi.TYPE_OBJECT))
+    @action(methods=['GET'], detail=False, permission_classes=[IsAuthenticated])
+    def logout(self, request, *args, **kwargs):
+        logout(request)
+        return Response()
 
     @swagger_auto_schema(request_body=AuthSerializer)
     @action(methods=['POST'], detail=False)
