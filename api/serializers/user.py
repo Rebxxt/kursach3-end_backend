@@ -14,7 +14,8 @@ class AuthSerializer(Serializer):
 class RoleSerializer(ModelSerializer):
     class Meta:
         model = RoleModel
-        exclude = ['is_base']
+        fields = '__all__'
+        read_only_fields = ['is_base']
 
 
 class UserRoleSerializer(ModelSerializer):
@@ -34,7 +35,8 @@ class UserRoleUpdateSerializer(ModelSerializer):
 class BuildSerializer(ModelSerializer):
     class Meta:
         model = BuildModel
-        exclude = ['is_base']
+        fields = '__all__'
+        read_only_fields = ['is_base']
 
 
 class AddressSerializer(ModelSerializer):
@@ -52,7 +54,8 @@ class PhoneSerializer(ModelSerializer):
 class TransportTypeSerializer(ModelSerializer):
     class Meta:
         model = TransportTypeModel
-        exclude = ['is_base']
+        fields = '__all__'
+        read_only_fields = ['is_base']
 
 
 class UserTransportSerializer(ModelSerializer):
