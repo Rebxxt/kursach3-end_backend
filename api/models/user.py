@@ -4,6 +4,7 @@ from django.db.models import Model, ForeignKey, CASCADE, TextField, CharField, I
 
 class RoleModel(Model):
     role = TextField(unique=True)
+    is_base = BooleanField(default=False)
 
 
 class UserRoleModel(Model):
@@ -13,6 +14,7 @@ class UserRoleModel(Model):
 
 class BuildModel(Model):
     type = TextField(unique=True)
+    is_base = BooleanField(default=False)
 
 
 class AddressModel(Model):
@@ -29,6 +31,7 @@ class PhoneModel(Model):
 
 class TransportTypeModel(Model):
     type = TextField(unique=True)
+    is_base = BooleanField(default=False)
 
 
 class UserTransportModel(Model):
