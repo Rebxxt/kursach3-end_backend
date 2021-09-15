@@ -13,6 +13,7 @@ class OrderModel(Model):
 class ItemModel(Model):
     order = ForeignKey(OrderModel, on_delete=CASCADE, null=True)
     item = TextField()
+    counter = IntegerField(default=0)
     code = TextField(unique=True, null=True)
     is_fragile = BooleanField(default=False)
     is_sunlight_damaged = BooleanField(default=False)
