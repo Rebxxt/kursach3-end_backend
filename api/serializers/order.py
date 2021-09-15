@@ -15,6 +15,14 @@ class ItemSerializer(ModelSerializer):
         fields = '__all__'
 
 
+class OrderCreateSerializer(ModelSerializer):
+    items = ItemSerializer(many=True, allow_null=True)
+
+    class Meta:
+        model = OrderModel
+        fields = '__all__'
+
+
 class OrderHistorySerializer(ModelSerializer):
     class Meta:
         model = OrderHistoryModel

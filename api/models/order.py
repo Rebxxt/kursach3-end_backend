@@ -1,7 +1,7 @@
 from django.contrib.auth.backends import UserModel
 from django.db.models import Model, ForeignKey, CASCADE, TextField, BooleanField, IntegerField, CheckConstraint, Q
 
-from api.models.user import UserTransportModel, PhoneModel, AddressModel
+from api.models.user import UserTransportModel, PhoneModel, AddressModel, BuildModel
 
 
 class OrderModel(Model):
@@ -23,5 +23,6 @@ class ItemModel(Model):
 
 class OrderHistoryModel(Model):
     order = ForeignKey(OrderModel, on_delete=CASCADE)
-    carrier = ForeignKey(UserModel, on_delete=CASCADE)
-    transport = ForeignKey(UserTransportModel, on_delete=CASCADE)
+    build = ForeignKey(BuildModel, on_delete=CASCADE, null=True)
+    carrier = ForeignKey(UserModel, on_delete=CASCADE, null=True)
+    transport = ForeignKey(UserTransportModel, on_delete=CASCADE, null=True)

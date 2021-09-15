@@ -43,6 +43,7 @@ class AuthViewSet(GenericViewSet):
     def registration(self, request, *args, **kwargs):
         user = User.objects.create_user(username=request.data['login'], password=request.data['password'])
         user = authenticate(username=user.username, password=request.data['password'])
+        login(request, user)
         return Response(self.serializer_class(user).data)
 
 
