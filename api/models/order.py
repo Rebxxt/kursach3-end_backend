@@ -11,14 +11,18 @@ class OrderModel(Model):
 
 
 class ItemModel(Model):
-    order = ForeignKey(OrderModel, on_delete=CASCADE)
+    order = ForeignKey(OrderModel, on_delete=CASCADE, null=True)
     item = TextField()
+    code = TextField(unique=True, null=True)
     is_fragile = BooleanField(default=False)
     is_sunlight_damaged = BooleanField(default=False)
     is_moisture_damaged = BooleanField(default=False)
     is_temperature_damaged = BooleanField(default=False)
     min_temperature = IntegerField(null=True)
     max_temperature = IntegerField(null=True)
+
+    class Meta:
+        ordering = ['-id']
 
 
 class OrderHistoryModel(Model):
