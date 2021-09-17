@@ -1,6 +1,6 @@
 from rest_framework import routers
 
-from api.views.order import OrderViewSet, ItemViewSet, OrderHistoryViewSet
+from api.views.order import OrderViewSet, ItemViewSet, OrderHistoryViewSet, OrderStatusViewSet
 from api.views.user import UserViewSet, RoleViewSet, UserRoleViewSet, BuildViewSet, AddressViewSet, PhoneViewSet, \
     TransportTypeViewSet, UserTransportViewSet, AuthViewSet
 
@@ -17,5 +17,6 @@ temp.register(r'user-transport', UserTransportViewSet)
 temp.register(r'order', OrderViewSet)
 temp.register(r'item', ItemViewSet)
 temp.register(r'order-history', OrderHistoryViewSet)
+temp.register(r'order-status', OrderStatusViewSet)
 
 urlpatterns = temp.urls

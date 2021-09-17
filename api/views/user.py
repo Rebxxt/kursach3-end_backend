@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, logout, login
 from django.contrib.auth.models import User
+from django_filters.rest_framework import DjangoFilterBackend
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin, UpdateModelMixin, DestroyModelMixin, RetrieveModelMixin, \
@@ -56,6 +57,13 @@ class UserViewSet(ListModelMixin, CreateModelMixin, UpdateModelMixin, DestroyMod
             return UserRoleSerializer
         return self.serializer_class
 
+    def get_queryset(self):
+        queryset = self.queryset
+        if role := self.request.query_params.get('role'):
+            queryset = queryset.filter(roles__role__role=role)
+
+        return queryset
+
     @swagger_auto_schema()
     @action(methods=['GET'], detail=True)
     def roles(self, request, *args, **kwargs):
@@ -106,6 +114,12 @@ class UserTransportViewSet(ListModelMixin, CreateModelMixin, UpdateModelMixin, D
         if self.action == 'multiset':
             return UserTransportMultisetSerializer
         return self.serializer_class
+
+    def get_queryset(self):
+        queryset = self.queryset
+        if user := self.request.query_params.get('user'):
+            queryset = queryset.filter(user_id=user)
+        return queryset
 
     @swagger_auto_schema(request_body=UserTransportMultisetSerializer)
     @action(methods=['PATCH'], detail=False)

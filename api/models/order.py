@@ -1,6 +1,6 @@
 from django.contrib.auth.backends import UserModel
 from django.db.models import Model, ForeignKey, CASCADE, TextField, BooleanField, IntegerField, CheckConstraint, Q, \
-    ManyToManyField, F, Sum
+    ManyToManyField, F, Sum, AutoField
 
 from api.models.user import UserTransportModel, PhoneModel, AddressModel, BuildModel
 
@@ -36,8 +36,17 @@ class ItemModel(Model):
         ordering = ['-id']
 
 
+class OrderStatusModel(Model):
+    status = TextField()
+
+
 class OrderHistoryModel(Model):
     order = ForeignKey(OrderModel, on_delete=CASCADE)
     build = ForeignKey(BuildModel, on_delete=CASCADE, null=True)
     carrier = ForeignKey(UserModel, on_delete=CASCADE, null=True)
     transport = ForeignKey(UserTransportModel, on_delete=CASCADE, null=True)
+    status = ForeignKey(OrderStatusModel, on_delete=CASCADE, default=OrderStatusModel.objects.get(status='initial').id)
+    queue = IntegerField(default=0)
+
+    class Meta:
+        ordering = ['id', 'queue']

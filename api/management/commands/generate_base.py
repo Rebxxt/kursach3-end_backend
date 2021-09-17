@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand, CommandError
 
-from api.models import RoleModel, UserRoleModel, BuildModel, TransportTypeModel
+from api.models import RoleModel, UserRoleModel, BuildModel, TransportTypeModel, OrderStatusModel
 
 
 class Command(BaseCommand):
@@ -31,5 +31,10 @@ class Command(BaseCommand):
         base_transport_types = ['car', 'truck', 'air', 'cargo']
         for transport_types in base_transport_types:
             TransportTypeModel.objects.create(is_base=True, type=transport_types)
+
+        # order history statuses
+        statuses = ['ready', 'finish_point', 'delivery', 'sort', 'initial']
+        for status in statuses:
+            OrderStatusModel.objects.create(status=status)
 
         self.stdout.write(self.style.SUCCESS('Successfully generate base'))
